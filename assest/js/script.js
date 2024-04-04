@@ -52,3 +52,36 @@ themeBtn.addEventListener('click', function() {
         localStorage.setItem('theme', '');
     }
 });
+
+// ---------------------------------------------
+//  voice to text 
+
+
+function startSpeechRecognition() {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'en-US'; // language English (United States)
+
+    // Start speech recognition
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        
+        document.querySelector('input[type="search"]').value = transcript;
+    };
+
+    recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+    };
+}
+
+
+document.querySelector('input[type="search"]').addEventListener('click', function(event) {
+    // Check if the click was on the microphone icon
+    const micIconClicked = event.clientX > this.offsetWidth - 30;
+
+    // If the microphone icon was clicked, start speech recognition
+    if (micIconClicked) {
+        startSpeechRecognition();
+    }
+});
